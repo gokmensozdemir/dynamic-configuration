@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DynamicConfiguration.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class DemoController : ControllerBase
     {
         private readonly ConfigurationReader configurationReader;
@@ -17,17 +19,12 @@ namespace DynamicConfiguration.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            string siteName = await configurationReader.GetValue<string>("SiteName");
-            int maxItemCount = await configurationReader.GetValue<int>("MaxItemCount");
-            bool isBasketEnabled = await configurationReader.GetValue<bool>("IsBasketEnabled");
-            double price = await configurationReader.GetValue<double>("Price");
-
-            return Ok(new
+            return Ok(new Dictionary<string, object>
             {
-                siteName,
-                maxItemCount,
-                isBasketEnabled,
-                price
+                { "SiteName", await configurationReader.GetValue<string>("SiteName") },
+                { "MaxItemCount", await configurationReader.GetValue<string>("MaxItemCount") },
+                { "IsBasketEnabled", await configurationReader.GetValue<string>("IsBasketEnabled") },
+                { "Price", await configurationReader.GetValue<string>("Price") }
             });
         }
     }
